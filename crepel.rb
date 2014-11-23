@@ -34,8 +34,8 @@ while true
     block_level -= 1 if input.end_with?("}")
     in_function = false if block_level == 0
   elsif is_end_block
-    block_level -= 1
     user_source << input
+    block_level -= 1
   elsif is_block
     user_source << input
     block_level += 1
@@ -47,7 +47,8 @@ while true
   
   if block_level == 0
     source_file = open("source.cpp", "w")
-    source_file.puts(main_source + functions.join("\n") + main_source2 + user_source.join("\n") + "return 0;}")
+    source = main_source + functions.join("\n") + main_source2 + user_source.join("\n") + "return 0;}"
+    source_file.puts(source)
     source_file.close
     `g++ source.cpp`
     curr_output = `./a.out`
