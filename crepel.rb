@@ -12,12 +12,11 @@ functions = []
 
 input = ""
 prev_output = ""
-types = ["short", "int", "long" "char", "float", "double", "void", "return"]
+types = ["short", "int", "long" "char", "float", "double", "void"]
 in_function = false
 block_level = 0
 while true
-  source_file = open("source.cpp", "w")
-  print "  ^\ncrepel>"
+  print "crêpel> "
   input = gets.strip
   break if input == ","
   
@@ -36,19 +35,18 @@ while true
     in_function = false if block_level == 0
   elsif is_end_block
     block_level -= 1
-    functions << input if in_function
-    user_source << input if !in_function
-    in_function = false if block_level == 0
+    user_source << input
   elsif is_block
     user_source << input
     block_level += 1
   elsif is_declaration
     user_source << input
   else
-    user_source << "cout << (" + input.gsub(";", "") + ");" if !is_declaration
+    user_source << "cout << (" + input.gsub(";", "") + ") << endl;"
   end
   
-  if !is_block && block_level == 0
+  if block_level == 0
+    source_file = open("source.cpp", "w")
     source_file.puts(main_source + functions.join("\n") + main_source2 + user_source.join("\n") + "return 0;}")
     source_file.close
     `g++ source.cpp`
@@ -59,6 +57,6 @@ while true
       to_print[0] = ""
     end
     prev_output = curr_output
-    puts to_print
+    puts to_print if to_print.strip != ""
   end
 end
